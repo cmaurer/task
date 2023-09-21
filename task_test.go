@@ -2289,3 +2289,35 @@ func TestFor(t *testing.T) {
 		})
 	}
 }
+
+func TestIf(t *testing.T) {
+	tests := []struct {
+		name           string
+		expectedOutput string
+	}{
+		{
+			name:           "should-not-skip",
+			expectedOutput: "pass\n",
+		},
+		{
+			name:           "should-skip",
+			expectedOutput: "",
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			var buff bytes.Buffer
+			e := task.Executor{
+				Dir:    "testdata/if",
+				Stdout: &buff,
+				Stderr: &buff,
+				Silent: true,
+				Force:  true,
+			}
+			require.NoError(t, e.Setup())
+			require.NoError(t, e.Run(context.Background(), taskfile.Call{Task: test.name, Direct: true}))
+			assert.Equal(t, test.expectedOutput, buff.String())
+		})
+	}
+}

@@ -20,6 +20,7 @@ type Cmd struct {
 	IgnoreError bool
 	Defer       bool
 	Platforms   []*Platform
+	If          *If
 }
 
 func (c *Cmd) DeepCopy() *Cmd {
@@ -37,6 +38,7 @@ func (c *Cmd) DeepCopy() *Cmd {
 		IgnoreError: c.IgnoreError,
 		Defer:       c.Defer,
 		Platforms:   deepcopy.Slice(c.Platforms),
+		If:          c.If,
 	}
 }
 
@@ -62,6 +64,7 @@ func (c *Cmd) UnmarshalYAML(node *yaml.Node) error {
 			Shopt       []string
 			IgnoreError bool `yaml:"ignore_error"`
 			Platforms   []*Platform
+			If          *If
 		}
 		if err := node.Decode(&cmdStruct); err == nil && cmdStruct.Cmd != "" {
 			c.Cmd = cmdStruct.Cmd
@@ -71,6 +74,7 @@ func (c *Cmd) UnmarshalYAML(node *yaml.Node) error {
 			c.Shopt = cmdStruct.Shopt
 			c.IgnoreError = cmdStruct.IgnoreError
 			c.Platforms = cmdStruct.Platforms
+			c.If = cmdStruct.If
 			return nil
 		}
 

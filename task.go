@@ -304,6 +304,16 @@ func (e *Executor) runDeferred(t *taskfile.Task, call taskfile.Call, i int) {
 func (e *Executor) runCommand(ctx context.Context, t *taskfile.Task, call taskfile.Call, i int) error {
 	cmd := t.Cmds[i]
 
+	// skip command execution when the result of an If element returns true
+	if cmd.If != nil {
+		ifChecker := fingerprint.NewIfChecker(e.Logger)
+		shouldSkip, _ := ifChecker.ShouldSkip(ctx, t, cmd)
+		if shouldSkip {
+			e.Logger.VerboseErrf(logger.Yellow, "task: skipping command: %s")
+			return nil
+		}
+	}
+
 	switch {
 	case cmd.Task != "":
 		reacquire := e.releaseConcurrencyLimit()

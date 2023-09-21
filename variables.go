@@ -177,6 +177,7 @@ func (e *Executor) compiledTask(call taskfile.Call, evaluateShVars bool) (*taskf
 						IgnoreError: cmd.IgnoreError,
 						Defer:       cmd.Defer,
 						Platforms:   cmd.Platforms,
+						If:          cmd.If,
 					})
 				}
 				continue
@@ -191,6 +192,7 @@ func (e *Executor) compiledTask(call taskfile.Call, evaluateShVars bool) (*taskf
 				IgnoreError: cmd.IgnoreError,
 				Defer:       cmd.Defer,
 				Platforms:   cmd.Platforms,
+				If:          cmd.If,
 			})
 		}
 	}

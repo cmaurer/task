@@ -11,6 +11,11 @@ type StatusCheckable interface {
 	IsUpToDate(ctx context.Context, t *taskfile.Task) (bool, error)
 }
 
+// IfCheckable defines any type that can check if a command or task should not execute
+type IfCheckable interface {
+	ShouldSkip(ctx context.Context, t *taskfile.Task, c *taskfile.Cmd) (bool, error)
+}
+
 // SourcesCheckable defines any type that can check if the sources of a task are up-to-date.
 type SourcesCheckable interface {
 	IsUpToDate(t *taskfile.Task) (bool, error)

@@ -1,0 +1,16 @@
+version: "3"
+
+tasks:
+  should-not-skip:
+    env:
+      SKIP: 0
+    cmds:
+      - cmd: echo pass
+        if: "[ $SKIP == 1 ]"
+
+  should-skip:
+    env:
+      SKIP: 1
+    cmds:
+      - cmd: echo pass
+        if: "[ $SKIP == 1 ]"

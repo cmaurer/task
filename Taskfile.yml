@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 includes:
   docs:
@@ -10,7 +10,7 @@ vars:
   BIN: "{{.ROOT_DIR}}/bin"
 
 env:
-  CGO_ENABLED: '0'
+  CGO_ENABLED: "0"
 
 tasks:
   default:
@@ -22,7 +22,7 @@ tasks:
     desc: Installs Task
     aliases: [i]
     sources:
-      - './**/*.go'
+      - "./**/*.go"
     cmds:
       - go install -v ./cmd/task
 
@@ -65,7 +65,7 @@ tasks:
     desc: Runs golangci-lint
     aliases: [l]
     sources:
-      - './**/*.go'
+      - "./**/*.go"
       - .golangci.yml
     cmds:
       - golangci-lint run
@@ -73,7 +73,7 @@ tasks:
   lint:fix:
     desc: Runs golangci-lint and fixes any issues
     sources:
-      - './**/*.go'
+      - "./**/*.go"
       - .golangci.yml
     cmds:
       - golangci-lint run --fix
@@ -100,6 +100,16 @@ tasks:
     deps: [install]
     cmds:
       - go test {{catLines .GO_PACKAGES}}
+    vars:
+      GO_PACKAGES:
+        sh: go list ./...
+
+  test:verbose:
+    desc: Runs test suite with -v
+    aliases: [t]
+    deps: [install]
+    cmds:
+      - go test -v {{catLines .GO_PACKAGES}}
     vars:
       GO_PACKAGES:
         sh: go list ./...
