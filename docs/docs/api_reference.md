@@ -277,6 +277,7 @@ tasks:
 | `platforms`    | `[]string`                         | All platforms | Specifies which platforms the command should be run on. [Valid GOOS and GOARCH values allowed](https://github.com/golang/go/blob/main/src/go/build/syslist.go). Command will be skipped otherwise. |
 | `set`          | `[]string`                         |               | Specify options for the [`set` builtin](https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html).                                                                                  |
 | `shopt`        | `[]string`                         |               | Specify option for the [`shopt` builtin](https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html).                                                                               |
+| `if`        | [`If`](#if)                         |               | The command will not run if the command evaluates to `true` |
 
 :::info
 
@@ -358,3 +359,29 @@ tasks:
 | Attribute | Type       | Default | Description                                                                                        |
 | --------- | ---------- | ------- | -------------------------------------------------------------------------------------------------- |
 | `vars`    | `[]string` |         | List of variable or environment variable names that must be set if this task is to execute and run |
+
+:::
+
+#### If
+
+| Attribute | Type       | Default | Description                                                                                        |
+| --------- | ---------- | ------- | -------------------------------------------------------------------------------------------------- |
+| `sh`    | `string` |         | Shell Command to Run |
+
+The following example shows two examples of skipping a command.
+
+```yaml
+tasks:
+  foo:
+    env:
+      SKIP: 1
+    cmds:
+      - cmd: echo "run this command"
+      - cmd: echo "also run this command"
+        if: "[ $SKIP == 0 ]"
+      - cmd: echo "skip this command"
+        if: "[ $SKIP == 1 ]"
+      - cmd: echo "skip this command"
+        if:
+          sh: exit 1
+```
